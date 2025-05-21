@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+loguru
+SQLAlchemy
+asyncpg # Async PostgreSQL driver
+pydantic-settings
+python-jose[cryptography]
+emails # For constructing and sending emails
+greenlet # Added for SQLAlchemy async with asyncpg 

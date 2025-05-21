@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  postgres_db:
+    image: postgres:16
+    container_name: token_portal_postgres_db
+    environment:
+      POSTGRES_USER: ${DB_USER:-pg_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-pg_password}
+      POSTGRES_DB: ${DB_NAME:-appdb}
+    ports:
+      - "${DB_PORT_HOST:-9972}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    env_file:
+      - ./../.env
+
+  redis_db:
+    image: redis:7-alpine # Using a specific version like 7-alpine is good practice
+    container_name: token_portal_redis_db
+    ports:
+      - "${REDIS_PORT_HOST:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    #env_file: # Redis typically doesn't require an env_file for basic setup
+    #  - ./../.env # unless you have specific Redis configurations to pass via env vars
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local 
