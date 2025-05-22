@@ -13,9 +13,9 @@
 ### A. Core Setup & Structure
 - [x] Initialize FastAPI project (`app/main.py`).
 - [x] Implement project structure as per design (api, core, db, services).
-    - [ ] Add `services/redis_service.py` for Redis client and utilities.
+    - [x] Add `services/redis_service.py` for Redis client and utilities.
 - [x] Configure basic logging (to console/file).
-- [ ] Setup Redis client connection.
+- [x] Setup Redis client connection.
 - [x] Setup Pydantic models (`schemas.py`) for:
     - [x] User (UserCreate, UserRead)
     - [x] OTP (OtpRequest, OtpVerify) - (Interaction with these will change to Redis)
@@ -25,19 +25,19 @@
 ### B. Database Models & CRUD (`db/models.py`, `db/crud.py`)
 - [x] Implement `User` SQLAlchemy model.
 - [x] Implement `AuthOtp` SQLAlchemy model.
-    - [ ] This model will be **removed**. CRUD operations for OTP will use Redis.
+    - [x] This model will be **removed**. CRUD operations for OTP will use Redis.
 - [x] Implement `ApiToken` SQLAlchemy model.
-    - [ ] CRUD operations for `ApiToken` will be updated:
-        - [ ] Creation: Store in PostgreSQL and cache in Redis.
-        - [ ] Validation lookup: Prioritize Redis.
+    - [x] CRUD operations for `ApiToken` will be updated:
+        - [x] Creation: Store in PostgreSQL and cache in Redis.
+        - [x] Validation lookup: Prioritize Redis.
         - [ ] Revocation: Update in PostgreSQL and Redis.
 - [x] Implement `ApiUsageLog` SQLAlchemy model.
 - [x] Implement basic async CRUD functions for User (create, get by email, get by ID).
 - [x] Implement basic async CRUD functions for AuthOtp (create, get by email, mark as used).
-    - [ ] These CRUD functions will be **rewritten** to use Redis (e.g., in `services/otp_service.py`).
+    - [x] These CRUD functions will be **rewritten** to use Redis (e.g., in `services/otp_service.py`).
 - [x] Implement basic async CRUD functions for ApiToken (create, get by user_id, get by ID, get by hashed_token, list all for admin, revoke).
-    - [ ] `create`: Update to write to PostgreSQL and cache in Redis.
-    - [ ] `get_by_hashed_token`: Update to query Redis first for validation purposes.
+    - [x] `create`: Update to write to PostgreSQL and cache in Redis.
+    - [x] `get_by_hashed_token`: Update to query Redis first for validation purposes.
     - [ ] `revoke`: Update to modify PostgreSQL and Redis.
 - [x] Implement basic async CRUD functions for ApiUsageLog (create log entry).
 
@@ -46,13 +46,13 @@
     - [x] Generate 5-digit OTP.
     - [x] Hash OTP (SHA256).
     - [x] Store `user_email`, `otp_hash`, `expires_at` in `auth_otp` table.
-        - [ ] This will change to: Store OTP data in Redis with expiry.
+        - [x] This will change to: Store OTP data in Redis with expiry.
     - [x] Send plain OTP email using Gmail (via `smtp.gmail.com` with App Password).
 - [x] Implement `POST /auth/verify-otp` endpoint:
     - [x] Verify OTP hash, expiry, and used status.
-        - [ ] This will change to: Verify OTP against data in Redis (hash, implicit expiry, delete on use).
+        - [x] This will change to: Verify OTP against data in Redis (hash, implicit expiry, delete on use).
     - [x] Mark OTP as used.
-        - [ ] This will change to: Delete OTP from Redis on successful verification.
+        - [x] This will change to: Delete OTP from Redis on successful verification.
     - [x] Generate JWT token (containing user_id, email, role, exp).
 - [x] Implement JWT utility functions (create token, verify token - `core/security.py`).
 - [x] Implement dependency to get current active user from JWT (`core/dependencies.py`).
@@ -62,7 +62,7 @@
     - [x] Generate secure API token string.
     - [x] Hash API token (SHA256).
     - [x] Store token metadata (user_id, name, hashed_token, expires_at, etc.).
-        - [ ] This will change to: Store in PostgreSQL `api_tokens` table and cache necessary validation data in Redis.
+        - [x] This will change to: Store in PostgreSQL `api_tokens` table and cache necessary validation data in Redis.
     - [x] Return plain API token **once** to the user.
 - [x] Implement `GET /tokens` (protected, user role): List tokens for the authenticated user (metadata only).
     - [ ] (No change, still queries PostgreSQL `api_tokens` table).
@@ -73,7 +73,7 @@
 - [x] Implement middleware for `/api/public/*` routes.
 - [x] Extract API token from header (`X-API-Key` or `Authorization: Bearer`).
 - [x] Validate token: hash comparison, check expiry, check revoked status.
-    - [ ] This will change to: Query Redis first for token validity (existence, expiry, revoked status). PostgreSQL is fallback/source of truth if needed, but Redis is primary for speed.
+    - [x] This will change to: Query Redis first for token validity (existence, expiry, revoked status). PostgreSQL is fallback/source of truth if needed, but Redis is primary for speed.
 - [x] Log API usage to `api_usage_logs` table (basic details: token_id (if valid), user_id, path, method, status, timestamp).
 - [x] If valid, allow request to proceed (for MVP, this might just return a success message or proxy to a dummy endpoint if no actual public APIs are ready).
 
@@ -90,7 +90,7 @@
 - [x] Implement hashing for API tokens and OTPs (`core/security.py`).
 - [x] Configure CORS middleware (`main.py`) to allow frontend origin.
 - [x] Load sensitive configurations (DB URL, JWT Secret, Gmail App Password) from environment variables (`core/config.py`).
-    - [ ] Add Redis Connection URL to environment variables.
+    - [x] Add Redis Connection URL to environment variables.
 
 ## III. Database (PostgreSQL) - MVP (Concurrent with Backend)
 
@@ -99,9 +99,9 @@
 - [x] Apply initial schema (run CREATE TABLE statements or use Alembic/SQLAlchemy migrations for first setup).
     - [x] `users` table.
     - [x] `auth_otp` table.
-        - [ ] This table will be **removed** from PostgreSQL schema.
+        - [x] This table will be **removed** from PostgreSQL schema.
     - [x] `api_tokens` table.
-        - [ ] Schema remains, role as primary store for metadata confirmed. Redis caches some of this data.
+        - [x] Schema remains, role as primary store for metadata confirmed. Redis caches some of this data.
     - [x] `api_usage_logs` table.
 - [x] Ensure asynchronous connection from FastAPI is working.
 

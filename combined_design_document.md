@@ -68,11 +68,11 @@ app/
 
 | Router        | Path Prefix     | Key Endpoints                                       | Description                                      |
 | ------------- | --------------- | --------------------------------------------------- | ------------------------------------------------ |
-| Auth          | `/auth`         | `POST /request-otp`, `POST /verify-otp`             | Email & OTP login, JWT issuance.                 |
-| Users         | `/users`        | `GET /me`                                           | Authenticated user profile info.                 |
-| Tokens        | `/tokens`       | `POST /`, `GET /`, `DELETE /{token_id}`             | API Token management (CRUD) for the current user.|
-| Public API    | `/api/public`   | `ANY /{path:path}`                                  | API endpoints protected by generated API tokens. |
-| Admin         | `/admin`        | `GET /users`, `GET /tokens`, `GET /usage/logs` (basic) | Admin-only: basic user & token lists, raw logs. `[POST-MVP]` for `GET /users/{user_id}`, `GET /usage/summary`. |
+| Auth          | `/api/v1/auth`  | `POST /request-otp`, `POST /verify-otp`             | Email & OTP login, JWT issuance.                 |
+| Users         | `/api/v1/users` | `GET /me`                                           | Authenticated user profile info.                 |
+| Tokens        | `/api/v1/tokens`| `POST /`, `GET /`, `DELETE /{token_id}`             | API Token management (CRUD) for the current user.|
+| Public API    | `/api/v1/public`| `ANY /{path:path}` (e.g., `GET /ping`)              | API endpoints protected by generated API tokens. |
+| Admin         | `/api/v1/admin` | `GET /users`, `GET /tokens`, `GET /usage/logs` (basic) | Admin-only: basic user & token lists, raw logs. `[POST-MVP]` for `GET /users/{user_id}`, `GET /usage/summary`. |
 
 ### 3.3. Authentication Flow `[MVP]`
 
